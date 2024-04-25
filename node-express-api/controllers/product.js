@@ -2,7 +2,15 @@ const asyncWrapper = require('../middleware/async');
 const Product = require('../models/Product')
 const dotenv = require('dotenv')
 
+/*@Nikhil-Shawn
+asyyncWrapper for try catch has been implemented in middleware,
+redirect controller to route for handling request 
+and add middleware for verification before the controller in routes */
+
 dotenv.config();
+
+
+// Create product in DB (Functionality only)
 
 const createProduct = async (req, res)=>{
     try {
@@ -13,6 +21,8 @@ const createProduct = async (req, res)=>{
         res.status(500).json({err: err.message})
     }
 }
+
+// Update product in DB (Functionality only)
 
 const updateSingleProduct = async (req,res)=>{
     try {
