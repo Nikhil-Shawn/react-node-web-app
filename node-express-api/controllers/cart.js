@@ -1,6 +1,11 @@
 const asyncWrapper = require('../middleware/async')
 const Cart = require('../models/Cart')
 
+/*@Nikhil-Shawn
+asyyncWrapper for try catch has been implemented in middleware,
+redirect controller to route for handling request 
+and add middleware for verification before the controller in routes */
+
 // New cart creation
 const newCartCreation = asyncWrapper(async (req, res)=>{
         const newCart = Cart(req.body)
