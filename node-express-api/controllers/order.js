@@ -1,10 +1,20 @@
 const asyncWrapper = require('../middleware/async')
 const Order = require('../models/Order')
 
+/*@Nikhil-Shawn
+asyyncWrapper for try catch has been implemented in middleware,
+redirect controller to route for handling request 
+and add middleware for verification before the controller in routes */
+
+
+// Get single order API
+
 const getSingleOrder = asyncWrapper(async(req, res)=>{
     const singleOrder = await Order.find({userId: req.params.userId})
     res.status(200).json(singleOrder)
 })
+
+// Update single order API
 
 const updateOrder = asyncWrapper(async(req, res)=>{
     const updateSingleOrder = await Order.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true, runValidators: true})
@@ -13,6 +23,8 @@ const updateOrder = asyncWrapper(async(req, res)=>{
     }
     res.status(200).json(updateSingleOrder)
 })
+
+// Get all the orders API
 
 const getAllOrders = asyncWrapper(async(req,res)=>{
     const qNew = req.query.new
