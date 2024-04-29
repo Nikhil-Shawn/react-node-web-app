@@ -1,0 +1,18 @@
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest  # Changed runs-on to use Windows environment
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the site in the jekyll/builder container
+      run: |
+        docker run `
+        -v ${GITHUB_WORKSPACE}:/srv/jekyll -v ${GITHUB_WORKSPACE}/_site:/srv/jekyll/_site `
+        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future
