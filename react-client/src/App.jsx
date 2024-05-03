@@ -5,7 +5,7 @@ import ProductPage from './pages/ProductPage';
 import Register from './pages/Register';
 import SingleProductPage from './pages/SingleProductPage';
 import {BrowserRouter as Router, Route, Link,
-Routes} from "react-router-dom"
+Routes, redirect} from "react-router-dom"
 
 
 const App = () => {
@@ -16,9 +16,9 @@ const App = () => {
         </Route>
         <Route path="/products" element={<ProductPage />}>
         </Route>
-        <Route path="/login" element={<Login />}>
+        <Route path="/login" element={user ? <redirect to="/"/> : <Login />}>
         </Route>
-        <Route path="/register" element={<Register />}>
+        <Route path="/register" element={user ? <redirect to="/"/> : <Register />}>
         </Route>
         <Route path="/product:id" element={<SingleProductPage />}>
         </Route>
