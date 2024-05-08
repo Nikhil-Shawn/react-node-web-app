@@ -2,6 +2,7 @@ import React from 'react'
 import { categories } from '../sliderdata'
 import styled from 'styled-components'
 import { mobile } from '../responsive'
+import { Link } from 'react-router-dom'
 
 const Container = styled.div`
 display: flex;
@@ -53,8 +54,10 @@ const Categories = () => {
         <CategoryOuterBox>
                 {categories.map((items) => ( 
                 <CategoryInnerBox bg={items.img} key={items.id}>
-                <Title>{items.title}</Title>
-                <Button>SHOP NOW</Button>
+                <Title>{items.title}</Title>    
+                <Link to={`products/${items.categories}`} style={{ textDecoration: 'none', color: 'inherit'}} >
+                <Button>SHOP NOW</Button>    
+                </Link>
                 </CategoryInnerBox>
                 ))}
         </CategoryOuterBox>

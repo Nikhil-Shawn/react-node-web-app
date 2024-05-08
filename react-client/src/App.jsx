@@ -9,18 +9,19 @@ Routes, Navigate} from "react-router-dom"
 
 
 const App = () => {
+  const user = false;
   return (
     <Router>
       <Routes>
       <Route path="/" element={<Home />}>
         </Route>
-        <Route path="/products" element={<ProductPage />}>
+        <Route path="/products/:category" element={<ProductPage />}>
         </Route>
         <Route path="/login" element={user ? <Navigate to="/"/> : <Login />}>
         </Route>
         <Route path="/register" element={user ? <Navigate to="/"/> : <Register />}>
         </Route>
-        <Route path="/product:id" element={<SingleProductPage />}>
+        <Route path="/product/:id" element={<SingleProductPage />}>
         </Route>
         <Route path="/cart" element={<Cart />}>
         </Route>
