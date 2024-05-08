@@ -7,10 +7,7 @@ on:
 jobs:
   build:
 
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-lateest]
+    runs-on: windows-latest  # Changed runs-on to use Windows environment
 
     steps:
     - uses: actions/checkout@v4
@@ -18,4 +15,4 @@ jobs:
       run: |
         docker run `
         -v ${GITHUB_WORKSPACE}:/srv/jekyll -v ${GITHUB_WORKSPACE}/_site:/srv/jekyll/_site `
-        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future
+        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
