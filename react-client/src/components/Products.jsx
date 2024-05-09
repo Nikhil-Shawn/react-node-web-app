@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { product } from '../sliderdata'
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { mobile, mobileS } from '../responsive';
+import axios from 'axios'
 
 
 const Container = styled.div`
@@ -85,11 +86,35 @@ cursor: pointer;
 }
 `
 
-const Products = () => {
+const Products = ({cat, filter, sort}) => {
+  const [products, setProduct] = useState([])
+  const [filterdProducts, setFilteredProduct] = useState([])
+
+  useEffect(()=>{
+    const getProduct = async()=>{
+      try {
+      const res = await axios.get(cat ? `http://localhost:5000/api/v1/product?categories=${cat}` : "http://localhost:5000/api/v1/product")
+      console.log(cat);
+      console.log(res)
+      setProduct(res.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getProduct();
+  }, [cat])
+
+  useEffect(()=>{
+    setFilteredProduct(products.filter((item)=>{
+      Object.entries(filter).every(([key, value])=>{
+        item[key].includes(value)
+      })
+    }))
+  }, [[products, cat, filter]])
   return (
     <Container>
             {product.map((items)=>(
-            <ProductBox key={items.key}>
+            <ProductBox key={items.id}>
             <Image src={items.img}/>
             <Circle/>
             <Info>

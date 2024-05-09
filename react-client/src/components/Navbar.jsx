@@ -5,6 +5,7 @@ import { TbHexagonLetterN } from "react-icons/tb";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import Badge from '@mui/material/Badge';
 import {mobile} from '../responsive'
+import { Link } from 'react-router-dom';
 
 
 const Container = styled.div`
@@ -77,7 +78,9 @@ export const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
+          <Link to="/" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <Logo />
+          </Link>
         </Center>
         <Right>
           <MenuItemRight>REGISTER</MenuItemRight>
