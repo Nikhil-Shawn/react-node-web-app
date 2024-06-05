@@ -19,9 +19,9 @@ const App = () => {
         </Route>
         <Route path="/products/:category" element={<ProductPage />}>
         </Route>
-        <Route path="/login" element={user ? <Navigate to="/"/> : <Login />}>
+        <Route path="/login" element={<Login />}>
         </Route>
-        <Route path="/register" element={user ? <Navigate to="/"/> : <Register />}>
+        <Route path="/register" element={<Register />}>
         </Route>
         <Route path="/product/:id" element={<SingleProductPage />}>
         </Route>

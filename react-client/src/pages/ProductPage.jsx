@@ -54,6 +54,7 @@ const ProductPage = () => {
             [e.target.name]: value
         })
     }
+
   return (
     <div>
         <Navbar/>
@@ -73,12 +74,12 @@ const ProductPage = () => {
                 </Select>
                 <Select name="color" onChange={handleFilter}>
                     <Option disabled>Color</Option>
-                    <Option>White</Option>
-                    <Option>Red</Option>
-                    <Option>Black</Option>
-                    <Option>Grey</Option>
-                    <Option>Brown</Option>
-                    <Option>Purple</Option>
+                    <Option>white</Option>
+                    <Option>red</Option>
+                    <Option>black</Option>
+                    <Option>grey</Option>
+                    <Option>brown</Option>
+                    <Option>purple</Option>
                 </Select>
             </Filter>
             <Filter>

@@ -86,6 +86,8 @@ cursor: pointer;
 }
 `
 
+
+
 const Products = ({cat, filter, sort}) => {
   const [products, setProduct] = useState([])
   const [filterdProducts, setFilteredProduct] = useState([])
@@ -104,16 +106,18 @@ const Products = ({cat, filter, sort}) => {
     getProduct();
   }, [cat])
 
-  useEffect(()=>{
-    setFilteredProduct(products.filter((item)=>{
-      Object.entries(filter).every(([key, value])=>{
-        item[key].includes(value)
-      })
-    }))
-  }, [[products, cat, filter]])
+  useEffect(() => {
+    setFilteredProduct(products.filter((item) => {
+      return Object.entries(filter).every(([key, value]) => {
+        return item[key].includes(value);
+      });
+    }));
+  }, [products, cat, filter]);
+  
+
   return (
     <Container>
-            {product.map((items)=>(
+            {filterdProducts.map((items)=>(
             <ProductBox key={items.id}>
             <Image src={items.img}/>
             <Circle/>
