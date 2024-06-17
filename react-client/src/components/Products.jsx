@@ -10,7 +10,7 @@ const Container = styled.div`
   flex: 1;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* Distribute items evenly */
+  justify-content: ${({ itemsCount }) => (itemsCount < 4 ? 'left' : 'space-between')}; /* Adjust justify-content based on item count */
   margin: 0 10px;
   
   ${mobile({ flexDirection: 'column'})}
@@ -114,7 +114,7 @@ const Products = ({ cat, filter = {}, sort }) => {
   }, [products, cat, filter]);
 
   return (
-    <Container>
+    <Container itemsCount={filteredProducts.length}>
       {filteredProducts.map((items) => (
         <ProductBox key={items.id}>
           <Image src={items.img} />
