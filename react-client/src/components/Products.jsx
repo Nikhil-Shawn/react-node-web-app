@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { product } from '../sliderdata'
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { mobile, mobileS } from '../responsive';
-import axios from 'axios'
-
+import { mobile } from '../responsive';
+import axios from 'axios';
 
 const Container = styled.div`
   flex: 1;
@@ -28,7 +26,6 @@ const Info = styled.div`
   background-color: rgba(0, 0, 0, 0.1);
   align-items: center;
   justify-content: center;
-
 `;
 
 const ProductBox = styled.div`
@@ -44,98 +41,99 @@ const ProductBox = styled.div`
 
   ${mobile({ width: '100%', height: '30vh', margin: '5px 0px'})}
 
-&:hover ${Info} {
-  opacity: 1;
-}
+  &:hover ${Info} {
+    opacity: 1;
+  }
 
-&:hover {
-  z-index: 2;
-  transform: scale(1.05);
-  ${mobile({ transform: 'scale(1.02)'})}
-}
+  &:hover {
+    z-index: 2;
+    transform: scale(1.05);
+    ${mobile({ transform: 'scale(1.02)'})}
+  }
+`;
 
-`
 const Image = styled.img`
-height: 80%;
-z-index: 2;
+  height: 80%;
+  z-index: 2;
+`;
 
-
-`
 const Circle = styled.div`
-background-color: white;
-border-radius: 50%;
-position: absolute;
-width: 18vw;
-height: 16vw;
-`
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  width: 18vw;
+  height: 16vw;
+`;
 
 const Icon = styled.div`
-display: flex;
-align-items: center;
-justify-content: center;
-margin: 15px;
-border-radius: 50%;
-background-color: white;
-padding: 5px;
-transition: all 0.5s ease;
-cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px;
+  border-radius: 50%;
+  background-color: white;
+  padding: 5px;
+  transition: all 0.5s ease;
+  cursor: pointer;
 
-&:hover {
-  background-color: #e3e1e1;
-  transform: scale(1.1);
-}
-`
+  &:hover {
+    background-color: #e3e1e1;
+    transform: scale(1.1);
+  }
+`;
 
-
-
-const Products = ({cat, filter, sort}) => {
-  const [products, setProduct] = useState([])
-  const [filterdProducts, setFilteredProduct] = useState([])
-
-  useEffect(()=>{
-    const getProduct = async()=>{
-      try {
-      const res = await axios.get(cat ? `http://localhost:5000/api/v1/product?categories=${cat}` : "http://localhost:5000/api/v1/product")
-      console.log(cat);
-      console.log(res)
-      setProduct(res.data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getProduct();
-  }, [cat])
+const Products = ({ cat, filter = {}, sort }) => {
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
-    setFilteredProduct(products.filter((item) => {
-      return Object.entries(filter).every(([key, value]) => {
-        return item[key].includes(value);
-      });
-    }));
+    const getProducts = async () => {
+      try {
+        const res = await axios.get(
+          cat ? `http://localhost:5000/api/v1/product?categories=${cat}` : "http://localhost:5000/api/v1/product"
+        );
+        setProducts(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProducts();
+  }, [cat]);
+
+  useEffect(() => {
+    console.log("Received filter:", filter);
+    if (filter && Object.keys(filter).length > 0) {
+      setFilteredProducts(
+        products.filter((item) =>
+          Object.entries(filter).every(([key, value]) => item[key]?.includes(value))
+        )
+      );
+    } else {
+      setFilteredProducts(products);
+    }
   }, [products, cat, filter]);
-  
 
   return (
     <Container>
-            {filterdProducts.map((items)=>(
-            <ProductBox key={items.id}>
-            <Image src={items.img}/>
-            <Circle/>
-            <Info>
+      {filteredProducts.map((items) => (
+        <ProductBox key={items.id}>
+          <Image src={items.img} />
+          <Circle />
+          <Info>
             <Icon>
-                <ShoppingCartOutlinedIcon/>
+              <ShoppingCartOutlinedIcon />
             </Icon>
             <Icon>
-                <FavoriteIcon/>
+              <FavoriteIcon />
             </Icon>
             <Icon>
-            <SearchIcon/>
+              <SearchIcon />
             </Icon>
-            </Info>
+          </Info>
         </ProductBox>
-            ))}
+      ))}
     </Container>
-  )
-}
+  );
+};
 
-export default Products
+export default Products;
