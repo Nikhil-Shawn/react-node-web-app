@@ -66,7 +66,7 @@ Implement the ability for sellers to post their products, manage inventory, and 
 ## Usage
 
 ### Post Products and Sell to Your Audience
-Implement the ability for sellers to post their products, manage inventory, and sell directly to their audience through the platform.
+- Implement the ability for sellers to post their products, manage inventory, and sell directly to their audience through the platform.
 
 ### Sorting and Filtering
 - Use the sorting and filtering options available on the product listing pages to refine your search results.
