@@ -4,19 +4,22 @@ Welcome to the E-commerce Website project! This repository contains the code for
 
 ## Features
 
-### 1. Sorting
+### 1. Post Products and Sell to Your Audience
+Implement the ability for sellers to post their products, manage inventory, and sell directly to their audience through the platform.
+
+### 2. Sorting
 - Users can sort products based on various criteria such as price, popularity, rating, and more.
 
-### 2. Filtering
+### 3. Filtering
 - Users can filter products based on attributes like price range, brand, color, size, etc.
 
-### 3. Category Fetching
+### 4. Category Fetching
 - Dynamic fetching of product categories from the database to display to users.
 
-### 4. Stripe Payment Integration
+### 5. Stripe Payment Integration
 - Secure payment processing using Stripe.
 
-### 5. Future Features
+### 6. Future Features
 - **Analytics**: Implement analytics to track user behavior, sales, and other key metrics.
 - **Admin Dashboard**: Develop a comprehensive admin dashboard for managing products, orders, users, and viewing analytics.
 
@@ -32,8 +35,9 @@ Welcome to the E-commerce Website project! This repository contains the code for
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/ecommerce-website.git
-   cd ecommerce-website
+   git clone link
+   cd react-client (Front-end)
+   cd node-expres api (Back-end)
    ```
 
 2. **Install dependencies:**
@@ -59,35 +63,10 @@ Welcome to the E-commerce Website project! This repository contains the code for
    http://localhost:3000
    ```
 
-## Project Structure
-
-```plaintext
-ecommerce-website/
-├── public/
-│   ├── index.html
-│   └── ...
-├── src/
-│   ├── components/
-│   │   ├── Sorting.jsx
-│   │   ├── Filtering.jsx
-│   │   ├── Category.jsx
-│   │   └── ...
-│   ├── pages/
-│   │   ├── HomePage.jsx
-│   │   ├── ProductPage.jsx
-│   │   └── ...
-│   ├── services/
-│   │   ├── api.js
-│   │   └── stripe.js
-│   ├── App.js
-│   ├── index.js
-│   └── ...
-├── .env
-├── package.json
-└── README.md
-```
-
 ## Usage
+
+### Post Products and Sell to Your Audience
+Implement the ability for sellers to post their products, manage inventory, and sell directly to their audience through the platform.
 
 ### Sorting and Filtering
 - Use the sorting and filtering options available on the product listing pages to refine your search results.
@@ -121,5 +100,7 @@ We welcome contributions to enhance this project! Please follow these steps to c
 
 This project is licensed under the MIT License.
 
+## Support
+If you encounter any issues or have any questions about the HR System, please [open an issue](https://github.com/nikhil-shawn/react-node-web-app/issues) on GitHub.
 
 Thank you for checking out my E-commerce Website project! Happy coding!
