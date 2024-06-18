@@ -5,7 +5,7 @@ Welcome to the E-commerce Website project! This repository contains the code for
 ## Features
 
 ### 1. Post Products and Sell to Your Audience
-Implement the ability for sellers to post their products, manage inventory, and sell directly to their audience through the platform.
+- Implement the ability for sellers to post their products, manage inventory, and sell directly to their audience through the platform.
 
 ### 2. Sorting
 - Users can sort products based on various criteria such as price, popularity, rating, and more.
