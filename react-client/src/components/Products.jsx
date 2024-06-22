@@ -86,6 +86,7 @@ const Products = ({ cat, filter = {}, sort }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
+
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -112,6 +113,22 @@ const Products = ({ cat, filter = {}, sort }) => {
       setFilteredProducts(products);
     }
   }, [products, cat, filter]);
+
+  useEffect(() => {
+    if (sort === "newest") {
+      setFilteredProducts((prev) =>
+        [...prev].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      );
+    } else if (sort === "asc") {
+      setFilteredProducts((prev) =>
+        [...prev].sort((a, b) => a.price - b.price)
+      );
+    } else {
+      setFilteredProducts((prev) =>
+        [...prev].sort((a, b) => b.price - a.price)
+      );
+    }
+  }, [sort]);
 
   return (
     <Container itemsCount={filteredProducts.length}>
