@@ -14,8 +14,8 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: space-between; /* Distribute items evenly */
   margin: 0 10px;
-  
-  ${mobile({ flexDirection: 'column'})}
+
+  ${mobile({ flexDirection: 'column' })}
 `;
 
 const Info = styled.div`
@@ -42,7 +42,7 @@ const ProductBox = styled.div`
   background-color: aliceblue;
   transition: all 0.5s ease;
 
-  ${mobile({ width: '100%', height: '30vh', margin: '5px 0px'})}
+  ${mobile({ width: '100%', height: '30vh', margin: '5px 0px' })}
 
 &:hover ${Info} {
   opacity: 1;
