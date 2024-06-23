@@ -44,6 +44,8 @@ font-size: 22px;
 const ProductPage = () => {
     const location = useLocation();
     const cat = location.pathname.split("/")[2]
+    console.log(location.pathname)
+    console.log(cat)
     const [filter, setFilter] = useState({})
     const [sort, setSort] = useState("newest")
 
