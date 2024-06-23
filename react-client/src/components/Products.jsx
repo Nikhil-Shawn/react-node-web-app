@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { mobile } from '../responsive';
-import axios from 'axios';
 import { mobile } from '../responsive';
 import axios from 'axios';
 
@@ -48,9 +44,6 @@ const ProductBox = styled.div`
   &:hover ${Info} {
     opacity: 1;
   }
-  &:hover ${Info} {
-    opacity: 1;
-  }
 
   &:hover {
     z-index: 2;
@@ -63,17 +56,8 @@ const Image = styled.img`
   height: 80%;
   z-index: 2;
 `;
-  height: 80%;
-  z-index: 2;
-`;
 
 const Circle = styled.div`
-  background-color: white;
-  border-radius: 50%;
-  position: absolute;
-  width: 18vw;
-  height: 16vw;
-`;
   background-color: white;
   border-radius: 50%;
   position: absolute;
@@ -91,21 +75,7 @@ const Icon = styled.div`
   padding: 5px;
   transition: all 0.5s ease;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 15px;
-  border-radius: 50%;
-  background-color: white;
-  padding: 5px;
-  transition: all 0.5s ease;
-  cursor: pointer;
 
-  &:hover {
-    background-color: #e3e1e1;
-    transform: scale(1.1);
-  }
-`;
   &:hover {
     background-color: #e3e1e1;
     transform: scale(1.1);
@@ -118,8 +88,6 @@ const Products = ({ cat, filter = {}, sort }) => {
 
   useEffect(() => {
     const getProducts = async () => {
-  useEffect(() => {
-    const getProducts = async () => {
       try {
         console.log(cat);
         const res = await axios.get(
@@ -128,7 +96,6 @@ const Products = ({ cat, filter = {}, sort }) => {
         console.log(res.data); // Log API response
         setProducts(res.data);
       } catch (error) {
-        console.log(error);
         console.log(error);
       }
     };
@@ -172,27 +139,18 @@ const Products = ({ cat, filter = {}, sort }) => {
           <Info>
             <Icon>
               <ShoppingCartOutlinedIcon />
-              <ShoppingCartOutlinedIcon />
             </Icon>
             <Icon>
-              <FavoriteIcon />
               <FavoriteIcon />
             </Icon>
             <Icon>
               <SearchIcon />
-              <SearchIcon />
             </Icon>
-          </Info>
           </Info>
         </ProductBox>
-      ))}
       ))}
     </Container>
   );
 };
-  );
-};
-
-export default Products;
 
 export default Products;
