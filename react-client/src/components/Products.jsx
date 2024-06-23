@@ -10,10 +10,10 @@ const Container = styled.div`
   flex: 1;
   display: flex;
   flex-wrap: wrap;
-  justify-content: ${({ itemsCount }) => (itemsCount < 4 ? 'left' : 'space-between')}; /* Adjust justify-content based on item count */
+  justify-content: flex-start;
   margin: 0 10px;
-  
-  ${mobile({ flexDirection: 'column'})}
+
+  ${mobile({ flexDirection: 'column' })}
 `;
 
 const Info = styled.div`
@@ -34,12 +34,12 @@ const ProductBox = styled.div`
   align-items: center;
   justify-content: center;
   margin: 10px;
-  width: calc(25% - 20px); /* 25% width for 4 items per row with margin */
+  width: calc(25% - 20px);
   height: 22vw;
   background-color: aliceblue;
   transition: all 0.5s ease;
 
-  ${mobile({ width: '100%', height: '30vh', margin: '5px 0px'})}
+  ${mobile({ width: '100%', height: '30vh', margin: '5px 0px' })}
 
   &:hover ${Info} {
     opacity: 1;
@@ -48,7 +48,7 @@ const ProductBox = styled.div`
   &:hover {
     z-index: 2;
     transform: scale(1.05);
-    ${mobile({ transform: 'scale(1.02)'})}
+    ${mobile({ transform: 'scale(1.02)' })}
   }
 `;
 
@@ -86,13 +86,14 @@ const Products = ({ cat, filter = {}, sort }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-
   useEffect(() => {
     const getProducts = async () => {
       try {
+        console.log(cat);
         const res = await axios.get(
-          cat ? `http://localhost:5000/api/v1/product?categories=${cat}` : "http://localhost:5000/api/v1/product"
+          cat ? `http://localhost:5000/api/v1/product?categories=${cat}&cacheBust=${Date.now()}` : `http://localhost:5000/api/v1/product?cacheBust=${Date.now()}`
         );
+        console.log(res.data); // Log API response
         setProducts(res.data);
       } catch (error) {
         console.log(error);
@@ -102,7 +103,6 @@ const Products = ({ cat, filter = {}, sort }) => {
   }, [cat]);
 
   useEffect(() => {
-    console.log("Received filter:", filter);
     if (filter && Object.keys(filter).length > 0) {
       setFilteredProducts(
         products.filter((item) =>
@@ -112,7 +112,7 @@ const Products = ({ cat, filter = {}, sort }) => {
     } else {
       setFilteredProducts(products);
     }
-  }, [products, cat, filter]);
+  }, [products, filter]);
 
   useEffect(() => {
     if (sort === "newest") {
@@ -131,10 +131,10 @@ const Products = ({ cat, filter = {}, sort }) => {
   }, [sort]);
 
   return (
-    <Container itemsCount={filteredProducts.length}>
-      {filteredProducts.map((items) => (
-        <ProductBox key={items.id}>
-          <Image src={items.img} />
+    <Container>
+      {filteredProducts.map((item) => (
+        <ProductBox key={item._id}>
+          <Image src={item.img} />
           <Circle />
           <Info>
             <Icon>
