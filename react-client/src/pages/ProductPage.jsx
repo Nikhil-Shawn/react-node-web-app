@@ -18,9 +18,6 @@ const Head = styled.h1`
   font-size: 55px;
   margin: 20px 0px 0px 20px;
 `;
-  font-size: 55px;
-  margin: 20px 0px 0px 20px;
-`;
 
 const Filter = styled.div`
   margin: 20px 0px;
@@ -29,10 +26,6 @@ const Filter = styled.div`
 `;
 
 const FilterText = styled.span`
-  margin-right: 20px;
-  font-size: 20px;
-  ${mobile({ fontSize: '16px' })}
-`;
   margin-right: 20px;
   font-size: 20px;
   ${mobile({ fontSize: '16px' })}
@@ -47,8 +40,6 @@ const Select = styled.select`
 `;
 
 const Option = styled.option`
-  font-size: 22px;
-`;
   font-size: 22px;
 `;
 
@@ -150,9 +141,6 @@ const ProductPage = () => {
     </div>
   );
 };
-  );
-};
 
 export default ProductPage;
 
-export default ProductPage;
