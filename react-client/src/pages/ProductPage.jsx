@@ -66,7 +66,7 @@ const ProductPage = () => {
     <div>
       <Navbar />
       <Announcement />
-      <Head>Clothes</Head>
+      <Head>{cat ? cat.toUpperCase() : "Clothes"}</Head>
       <FilterContainer>
         <Filter>
           <FilterText>Filter Products</FilterText>
