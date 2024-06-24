@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -62,7 +63,7 @@ const Circle = styled.div`
   border-radius: 50%;
   position: absolute;
   width: 18vw;
-  height: 16vw;
+  height: 18vw;  /* Adjusted to keep the circle proportionate */
 `;
 
 const Icon = styled.div`
@@ -79,6 +80,17 @@ const Icon = styled.div`
   &:hover {
     background-color: #e3e1e1;
     transform: scale(1.1);
+  }
+
+  & > a {
+    color: inherit;  /* Ensure the icon inherits color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  & > a > svg {
+    color: black;  /* Set the icon color to black */
   }
 `;
 
@@ -144,7 +156,9 @@ const Products = ({ cat, filter = {}, sort }) => {
               <FavoriteIcon />
             </Icon>
             <Icon>
-              <SearchIcon />
+              <Link to={`/product/${item._id}`}>
+                <SearchIcon />
+              </Link>
             </Icon>
           </Info>
         </ProductBox>
