@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Announcement from '../components/Announcement'
 import styled from 'styled-components'
@@ -6,6 +6,8 @@ import Newsletter from '../components/Newsletter'
 import Footer from '../components/Footer'
 import { Add, Remove } from '@mui/icons-material'
 import { Tablet, mobile } from '../responsive'
+import { publicRequest } from '../requestMethod';
+import { useLocation } from 'react-router-dom'
 
 const Container = styled.div`
 margin: 20px;
@@ -138,6 +140,33 @@ ${Tablet({height: '60px'})}
 `
 
 const SingleProductPage = () => {
+    const location = useLocation();
+    const [id, setId] = useState("");
+    const [product, setProduct] = useState(null);
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        setId(params.get("categories") || "");
+      }, [location]);
+
+    
+      useEffect(() => {
+        const getProduct = async () => {
+          try {
+            if (id) {
+            console.log("hey" +id)
+              const res = await publicRequest.get(`/product/${id}`);
+              console.log(res)
+              setProduct(res.data);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        getProduct();
+      }, [id]);
+    
+
   return (
     <div>
         <Navbar/>

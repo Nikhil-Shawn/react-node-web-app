@@ -5,6 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { mobile } from '../responsive';
+import { publicRequest } from '../requestMethod';
 import axios from 'axios';
 
 const Container = styled.div`
@@ -101,11 +102,9 @@ const Products = ({ cat, filter = {}, sort }) => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        console.log(cat);
-        const res = await axios.get(
-          cat ? `http://localhost:5000/api/v1/product?categories=${cat}&cacheBust=${Date.now()}` : `http://localhost:5000/api/v1/product?cacheBust=${Date.now()}`
+        const res = await publicRequest.get(
+          cat ? `/product?categories=${cat}&cacheBust=${Date.now()}` : `/product?cacheBust=${Date.now()}`
         );
-        console.log(res.data); // Log API response
         setProducts(res.data);
       } catch (error) {
         console.log(error);

@@ -101,46 +101,8 @@ const ProductPage = () => {
       <Products cat={cat} filter={filter} sort={sort} />
       <Newsletter />
       <Footer />
-      <Navbar />
-      <Announcement />
-      <Head>Clothes</Head>
-      <FilterContainer>
-        <Filter>
-          <FilterText>Filter Products</FilterText>
-          <Select name="size" onChange={handleFilter}>
-            <Option disabled>Size</Option>
-            <Option>S</Option>
-            <Option>M</Option>
-            <Option>L</Option>
-            <Option>XL</Option>
-            <Option>XXL</Option>
-          </Select>
-          <Select name="color" onChange={handleFilter}>
-            <Option disabled>Color</Option>
-            <Option>white</Option>
-            <Option>red</Option>
-            <Option>black</Option>
-            <Option>grey</Option>
-            <Option>brown</Option>
-            <Option>purple</Option>
-          </Select>
-        </Filter>
-        <Filter>
-          <FilterText>Sort Products</FilterText>
-          <Select onChange={(e) => setSort(e.target.value)}>
-            <Option disabled>Date/Price</Option>
-            <Option value="newest">Newest</Option>
-            <Option value="asc">Price(Asc)</Option>
-            <Option value="dsc">Price(Desc)</Option>
-          </Select>
-        </Filter>
-      </FilterContainer>
-      <Products cat={cat} filter={filter} sort={sort} />
-      <Newsletter />
-      <Footer />
     </div>
   );
 };
 
 export default ProductPage;
-
