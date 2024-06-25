@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { mobile } from '../responsive';
+import { publicRequest } from '../requestMethod';
 import axios from 'axios';
 
 const Container = styled.div`
@@ -62,7 +64,7 @@ const Circle = styled.div`
   border-radius: 50%;
   position: absolute;
   width: 18vw;
-  height: 16vw;
+  height: 18vw;  /* Adjusted to keep the circle proportionate */
 `;
 
 const Icon = styled.div`
@@ -80,6 +82,17 @@ const Icon = styled.div`
     background-color: #e3e1e1;
     transform: scale(1.1);
   }
+
+  & > a {
+    color: inherit;  /* Ensure the icon inherits color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  & > a > svg {
+    color: black;  /* Set the icon color to black */
+  }
 `;
 
 const Products = ({ cat, filter = {}, sort }) => {
@@ -89,11 +102,9 @@ const Products = ({ cat, filter = {}, sort }) => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        console.log(cat);
-        const res = await axios.get(
-          cat ? `http://localhost:5000/api/v1/product?categories=${cat}&cacheBust=${Date.now()}` : `http://localhost:5000/api/v1/product?cacheBust=${Date.now()}`
+        const res = await publicRequest.get(
+          cat ? `/product?categories=${cat}&cacheBust=${Date.now()}` : `/product?cacheBust=${Date.now()}`
         );
-        console.log(res.data); // Log API response
         setProducts(res.data);
       } catch (error) {
         console.log(error);
@@ -144,7 +155,9 @@ const Products = ({ cat, filter = {}, sort }) => {
               <FavoriteIcon />
             </Icon>
             <Icon>
-              <SearchIcon />
+              <Link to={`/product/${item._id}`}>
+                <SearchIcon />
+              </Link>
             </Icon>
           </Info>
         </ProductBox>
