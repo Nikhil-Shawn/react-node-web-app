@@ -127,7 +127,8 @@ const Button = styled.button`
 const SingleProductPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-
+  const [quantity, setQuantity] = useState(1);
+ 
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -143,6 +144,14 @@ const SingleProductPage = () => {
     };
     getProduct();
   }, [id]);
+
+  const handleQuantity = (type)=>{
+    if(type == "asc"){
+      setQuantity(quantity+1)
+    }else{
+      quantity > 1 && setQuantity(quantity-1)
+    }
+  }
 
   // Render a loading state while the product is being fetched
   if (!product) {
@@ -183,9 +192,9 @@ const SingleProductPage = () => {
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove onClick={()=>handleQuantity("desc")}/>
+              <Amount>{quantity}</Amount>
+              <Add  onClick={()=>handleQuantity("asc")} />
             </AmountContainer>
             <Button>Add to Cart</Button>
           </AddContainer>
