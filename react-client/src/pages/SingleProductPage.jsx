@@ -90,6 +90,7 @@ const ColorOption = styled.div`
   border-radius: 50%;
   background: ${props => props.color};
   margin: 0px 5px;
+  cursor: pointer; /* Change cursor to pointer to indicate clickability */
 `;
 
 const AddContainer = styled.div`
@@ -128,7 +129,9 @@ const SingleProductPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
- 
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -145,17 +148,17 @@ const SingleProductPage = () => {
     getProduct();
   }, [id]);
 
-  const handleQuantity = (type)=>{
-    if(type == "asc"){
-      setQuantity(quantity+1)
-    }else{
-      quantity > 1 && setQuantity(quantity-1)
+  const handleQuantity = (type) => {
+    if (type === "asc") {
+      setQuantity(quantity + 1);
+    } else {
+      quantity > 1 && setQuantity(quantity - 1);
     }
-  }
+  };
 
   // Render a loading state while the product is being fetched
   if (!product) {
-    return <div>Please hold on while we get the product information...</div>; 
+    return <div>Please hold on while we get the product information...</div>;
   }
 
   return (
@@ -174,17 +177,19 @@ const SingleProductPage = () => {
             <Filter>
               <FilterText>Color:</FilterText>
               <ColorFilter>
-              {console.log("Color"+ product.color)}
-                {product.color.map(color => (
-                  <ColorOption key={color} color={color} />
+                {product.color.map((color) => (
+                  <ColorOption
+                    key={color}
+                    color={color}
+                    onClick={() => setColor(color)}
+                  />
                 ))}
               </ColorFilter>
             </Filter>
             <Filter>
               <FilterText>Size:</FilterText>
-              <SizeFilter>
-                {console.log("hey"+product.size)}
-                {product.size.map(size => (
+              <SizeFilter onChange={(e) => setSize(e.target.value)}>
+                {product.size.map((size) => (
                   <SizeOption key={size}>{size}</SizeOption>
                 ))}
               </SizeFilter>
@@ -192,9 +197,9 @@ const SingleProductPage = () => {
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove onClick={()=>handleQuantity("desc")}/>
+              <Remove onClick={() => handleQuantity("desc")} />
               <Amount>{quantity}</Amount>
-              <Add  onClick={()=>handleQuantity("asc")} />
+              <Add onClick={() => handleQuantity("asc")} />
             </AmountContainer>
             <Button>Add to Cart</Button>
           </AddContainer>
