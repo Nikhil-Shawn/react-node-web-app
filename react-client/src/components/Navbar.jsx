@@ -83,8 +83,12 @@ export const Navbar = () => {
           </Link>
         </Center>
         <Right>
+          <Link to="/register" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <MenuItemRight>REGISTER</MenuItemRight>
-          <MenuItemRight>SIGN IN</MenuItemRight>
+          </Link>
+          <Link to="/login" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+          <MenuItemRight>LOGIN</MenuItemRight>
+          </Link>
           <MenuItemRight>
           <Badge badgeContent={4} color="primary">
           <MdOutlineShoppingCart size={20}/>
