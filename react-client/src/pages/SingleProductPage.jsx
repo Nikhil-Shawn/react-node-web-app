@@ -8,6 +8,8 @@ import { Add, Remove } from '@mui/icons-material';
 import { Tablet, mobile } from '../responsive';
 import { publicRequest } from '../requestMethod';
 import { useParams } from 'react-router-dom';
+import { addToCart } from '../redux/cartSlice';
+import { useDispatch } from 'react-redux';
 
 const Container = styled.div`
   margin: 20px;
@@ -131,6 +133,7 @@ const SingleProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const getProduct = async () => {
@@ -155,6 +158,13 @@ const SingleProductPage = () => {
       quantity > 1 && setQuantity(quantity - 1);
     }
   };
+
+  const handleUpdate = () =>{
+    dispatch(
+    addToCart({product, quantity})
+  )
+  }
+
 
 
   if (!product) {
@@ -201,7 +211,7 @@ const SingleProductPage = () => {
               <Amount>{quantity}</Amount>
               <Add onClick={() => handleQuantity("asc")} />
             </AmountContainer>
-            <Button>Add to Cart</Button>
+            <Button onClick={handleUpdate}>Add to Cart</Button>
           </AddContainer>
         </InfoContainer>
       </Container>

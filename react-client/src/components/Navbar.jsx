@@ -6,6 +6,7 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import Badge from '@mui/material/Badge';
 import {mobile} from '../responsive'
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 const Container = styled.div`
@@ -67,6 +68,9 @@ ${mobile({marginLeft: '8px',fontSize: "10px"})}
 `
 
 export const Navbar = () => {
+  const quantity = useSelector(state=>state.cart.quantity);
+  console.log(quantity)
+
   return (
     <Container>
       <Wrapper>
@@ -90,7 +94,7 @@ export const Navbar = () => {
           <MenuItemRight>LOGIN</MenuItemRight>
           </Link>
           <MenuItemRight>
-          <Badge badgeContent={4} color="primary">
+          <Badge badgeContent={quantity} color="primary">
           <MdOutlineShoppingCart size={20}/>
           </Badge>
           </MenuItemRight>
