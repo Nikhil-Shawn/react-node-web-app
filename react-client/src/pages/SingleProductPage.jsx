@@ -156,7 +156,7 @@ const SingleProductPage = () => {
     }
   };
 
-  // Render a loading state while the product is being fetched
+
   if (!product) {
     return <div>Please hold on while we get the product information...</div>;
   }
