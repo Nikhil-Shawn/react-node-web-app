@@ -60,7 +60,7 @@ Welcome to the E-commerce Website project! This repository contains the code for
 
 5. **Navigate to:**
    ```
-   http://localhost:3000
+   http://localhost:5173
    ```
 
 ## Usage
@@ -103,4 +103,4 @@ This project is licensed under the MIT License.
 ## Support
 If you encounter any issues or have any questions about the HR System, please [open an issue](https://github.com/nikhil-shawn/react-node-web-app/issues) on GitHub.
 
-Thank you for checking out my E-commerce Website project! Happy coding!
+Thank you for checking out my E-commerce Website project!
