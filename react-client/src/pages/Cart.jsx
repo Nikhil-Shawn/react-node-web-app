@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Footer from '../components/Footer'
 import { Add, Description, Remove } from '@mui/icons-material'
 import { Tablet, mobile } from '../responsive'
+import { useSelector } from 'react-redux'
 
 const Container = styled.div`
 `
@@ -94,10 +95,12 @@ flex-direction: column;
 margin-left: 10px;
 `
 const ProductImage = styled.img`
-max-width: 25%;
+  width: 180px;  /* Set a fixed width */
+  height: 180px;  /* Set a fixed height */
+  object-fit: contain;  /* Ensure the whole image fits within the dimensions */
+  ${mobile({ width: '100px', height: '100px' })}  /* Adjust size for mobile view */
+`;
 
-${mobile({maxWidth: '40%'})}
-`
 const Name = styled.span`
     
 `
@@ -175,6 +178,10 @@ width: 100%;
 `
 
 const Cart = () => {
+    const cart = useSelector(state=>state.cart)
+    console.log("Cart:", cart);
+    console.log("Cart Products:", cart.products);
+
   return (
     <Container>
     <Navbar/>
@@ -191,18 +198,19 @@ const Cart = () => {
         </Top>
         <Bottom>
              <Info>
+             {cart.products.map((product) => (
                 <Product>
                 <ProductDetail>
-                    <ProductImage src="https://i.postimg.cc/4x7L8qd8/3799.jpg" />
+                    <ProductImage src={product.img}/>
                     <Detail>
-                        <Name><span style={{fontWeight: "bold"}}>Product: </span>Sky Achiever
+                        <Name><span style={{fontWeight: "bold"}}>Product: </span>{product.title}
                         </Name>
                         <ID>
-                           <span style={{fontWeight: "bold"}}>ID: </span>204104120
+                           <span style={{fontWeight: "bold"}}>ID: </span>{product._id}
                         </ID>
                         <Color />
                         <Size>
-                        <span style={{fontWeight: "bold"}}>Size: </span>UK 8
+                        <span style={{fontWeight: "bold"}}>Size: </span>{product.size}
                         </Size>
                     </Detail>
                 </ProductDetail>
@@ -210,43 +218,16 @@ const Cart = () => {
                     <AmountContainer>
                     <Remove style={{ fontSize: '30px', cursor: 'pointer'}} />
                         <Number>
-                            1
+                          {product.quantity}
                         </Number>
                         <Add style={{ fontSize: '30px', cursor: 'pointer'}} />
                     </AmountContainer>
                     <Price>
-                        $30
+                    {product.price * product.quantity} 
                     </Price>
                 </PriceDetail>     
-                </Product>    
-                <Product>
-                <ProductDetail>
-                    <ProductImage src="https://i.postimg.cc/4x7L8qd8/3799.jpg" />
-                    <Detail>
-                        <Name><span style={{fontWeight: "bold"}}>Product: </span>Sky Achiever
-                        </Name>
-                        <ID>
-                           <span style={{fontWeight: "bold"}}>ID: </span>204104120
-                        </ID>
-                        <Color />
-                        <Size>
-                        <span style={{fontWeight: "bold"}}>Size: </span>UK 8
-                        </Size>
-                    </Detail>
-                </ProductDetail>
-                <PriceDetail>
-                    <AmountContainer>
-                    <Remove style={{ fontSize: '30px', cursor: 'pointer'}} />
-                        <Number>
-                            1
-                        </Number>
-                        <Add style={{ fontSize: '30px', cursor: 'pointer'}} />
-                    </AmountContainer>
-                    <Price>
-                        $30
-                    </Price>
-                </PriceDetail>     
-                </Product>         
+                </Product>       
+                 ))}
             </Info>
             <Summary>
                 <Title>
@@ -257,7 +238,7 @@ const Cart = () => {
                         SubTotal:
                     </SummaryText>
                     <SummaryPrice>
-                        $60
+                        {cart.total}
                     </SummaryPrice>
                 </SummaryItem>
                 
@@ -284,7 +265,7 @@ const Cart = () => {
                         Total:
                     </SummaryText>
                     <SummaryPrice>
-                        $60
+                      {cart.total}
                     </SummaryPrice>
                 </SummaryItem>
                 <Button1>Checkout Now</Button1>

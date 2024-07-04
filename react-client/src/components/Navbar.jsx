@@ -95,11 +95,13 @@ export const Navbar = () => {
           <Link to="/login" style={{ textDecoration: 'none', cursor: 'pointer' }}>
           <MenuItemRight>LOGIN</MenuItemRight>
           </Link>
+          <Link  to="/cart" state={{textDecoration: 'none', cursor: 'pointer'}}>
           <MenuItemRight>
           <Badge badgeContent={quantity} color="primary">
           <MdOutlineShoppingCart size={20}/>
           </Badge>
           </MenuItemRight>
+          </Link>
         </Right>
   
         </Wrapper>
