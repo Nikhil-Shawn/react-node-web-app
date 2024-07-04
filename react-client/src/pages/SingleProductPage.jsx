@@ -161,11 +161,9 @@ const SingleProductPage = () => {
 
   const handleUpdate = () =>{
     dispatch(
-    addToCart({product, quantity})
+    addToCart({...product, quantity, color, size})
   )
   }
-
-
 
   if (!product) {
     return <div>Please hold on while we get the product information...</div>;
