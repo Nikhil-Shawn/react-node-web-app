@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Announcement from '../components/Announcement';
 import styled from 'styled-components';
@@ -6,6 +6,11 @@ import Footer from '../components/Footer';
 import { Add, Remove } from '@mui/icons-material';
 import { Tablet, mobile } from '../responsive';
 import { useSelector } from 'react-redux';
+import StripeCheckout from 'react-stripe-checkout';
+import { userRequest } from '../requestMethod';
+import { useNavigate } from 'react-router-dom';
+
+const STRIPE_KEY = import.meta.env.VITE_STRIPE_KEY;
 
 const Container = styled.div``;
 const Wrapper = styled.div`
@@ -167,8 +172,28 @@ const Button1 = styled.button`
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-  console.log('Cart:', cart);
+  const [stripeToken, setStripeToken ] = useState(null)
+  console.log('Cart:', cart); 
   console.log('Cart Products:', cart.products);
+
+  const handleToken = token => {
+    console.log('Stripe Token:', token);
+    setStripeToken(token)
+    // Here you can handle the payment processing
+  };
+
+  useEffect(()=>{
+    const makeRequest = async ()=>{
+      try {
+        const res = await userRequest("/checkout/payment", {
+          tokenId: stripeToken,
+          amount: cart.total * 100
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }, [stripeToken, cart.total, history])
 
   return (
     <Container>
@@ -238,7 +263,15 @@ const Cart = () => {
               <SummaryText>Total:</SummaryText>
               <SummaryPrice>{cart.total}</SummaryPrice>
             </SummaryItem>
-            <Button1>Checkout Now</Button1>
+            <StripeCheckout
+              name="Your Shop"
+              description={`Your total is $${cart.total}`}
+              amount={cart.total * 100} // Stripe works with cents
+              token={handleToken}
+              stripeKey={STRIPE_KEY}
+            >
+              <Button1>Checkout Now</Button1>
+            </StripeCheckout>
           </Summary>
         </Bottom>
       </Wrapper>
