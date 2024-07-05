@@ -93,6 +93,7 @@ const ColorOption = styled.div`
   background: ${props => props.color};
   margin: 0px 5px;
   cursor: pointer; /* Change cursor to pointer to indicate clickability */
+  border: ${props => (props.selected ? '2px solid teal' : 'none')};
 `;
 
 const AddContainer = styled.div`
@@ -133,7 +134,7 @@ const SingleProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -143,6 +144,8 @@ const SingleProductPage = () => {
           const res = await publicRequest.get(`/product/${id}`);
           console.log("Product fetched:", res.data);
           setProduct(res.data);
+          setColor(res.data.color[0]);
+          setSize(res.data.size[0]);
         }
       } catch (error) {
         console.log(error);
@@ -159,11 +162,11 @@ const SingleProductPage = () => {
     }
   };
 
-  const handleUpdate = () =>{
+  const handleUpdate = () => {
     dispatch(
-    addToCart({...product, quantity, color, size})
-  )
-  }
+      addToCart({ ...product, quantity, color, size })
+    );
+  };
 
   if (!product) {
     return <div>Please hold on while we get the product information...</div>;
@@ -185,20 +188,21 @@ const SingleProductPage = () => {
             <Filter>
               <FilterText>Color:</FilterText>
               <ColorFilter>
-                {product.color.map((color) => (
+                {product.color.map((colorOption) => (
                   <ColorOption
-                    key={color}
-                    color={color}
-                    onClick={() => setColor(color)}
+                    key={colorOption}
+                    color={colorOption}
+                    selected={colorOption === color}
+                    onClick={() => setColor(colorOption)}
                   />
                 ))}
               </ColorFilter>
             </Filter>
             <Filter>
               <FilterText>Size:</FilterText>
-              <SizeFilter onChange={(e) => setSize(e.target.value)}>
-                {product.size.map((size) => (
-                  <SizeOption key={size}>{size}</SizeOption>
+              <SizeFilter value={size} onChange={(e) => setSize(e.target.value)}>
+                {product.size.map((sizeOption) => (
+                  <SizeOption key={sizeOption}>{sizeOption}</SizeOption>
                 ))}
               </SizeFilter>
             </Filter>
