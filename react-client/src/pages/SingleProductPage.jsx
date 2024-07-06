@@ -8,6 +8,8 @@ import { Add, Remove } from '@mui/icons-material';
 import { Tablet, mobile } from '../responsive';
 import { publicRequest } from '../requestMethod';
 import { useParams } from 'react-router-dom';
+import { addToCart } from '../redux/cartSlice';
+import { useDispatch } from 'react-redux';
 
 const Container = styled.div`
   margin: 20px;
@@ -90,6 +92,8 @@ const ColorOption = styled.div`
   border-radius: 50%;
   background: ${props => props.color};
   margin: 0px 5px;
+  cursor: pointer; /* Change cursor to pointer to indicate clickability */
+  border: ${props => (props.selected ? '2px solid teal' : 'none')};
 `;
 
 const AddContainer = styled.div`
@@ -127,6 +131,10 @@ const Button = styled.button`
 const SingleProductPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -136,6 +144,8 @@ const SingleProductPage = () => {
           const res = await publicRequest.get(`/product/${id}`);
           console.log("Product fetched:", res.data);
           setProduct(res.data);
+          setColor(res.data.color[0]);
+          setSize(res.data.size[0]);
         }
       } catch (error) {
         console.log(error);
@@ -144,9 +154,22 @@ const SingleProductPage = () => {
     getProduct();
   }, [id]);
 
-  // Render a loading state while the product is being fetched
+  const handleQuantity = (type) => {
+    if (type === "asc") {
+      setQuantity(quantity + 1);
+    } else {
+      quantity > 1 && setQuantity(quantity - 1);
+    }
+  };
+
+  const handleUpdate = () => {
+    dispatch(
+      addToCart({ ...product, quantity, color, size })
+    );
+  };
+
   if (!product) {
-    return <div>Please hold on while we get the product information...</div>; 
+    return <div>Please hold on while we get the product information...</div>;
   }
 
   return (
@@ -165,29 +188,32 @@ const SingleProductPage = () => {
             <Filter>
               <FilterText>Color:</FilterText>
               <ColorFilter>
-              {console.log("Color"+ product.color)}
-                {product.color.map(color => (
-                  <ColorOption key={color} color={color} />
+                {product.color.map((colorOption) => (
+                  <ColorOption
+                    key={colorOption}
+                    color={colorOption}
+                    selected={colorOption === color}
+                    onClick={() => setColor(colorOption)}
+                  />
                 ))}
               </ColorFilter>
             </Filter>
             <Filter>
               <FilterText>Size:</FilterText>
-              <SizeFilter>
-                {console.log("hey"+product.size)}
-                {product.size.map(size => (
-                  <SizeOption key={size}>{size}</SizeOption>
+              <SizeFilter value={size} onChange={(e) => setSize(e.target.value)}>
+                {product.size.map((sizeOption) => (
+                  <SizeOption key={sizeOption}>{sizeOption}</SizeOption>
                 ))}
               </SizeFilter>
             </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove onClick={() => handleQuantity("desc")} />
+              <Amount>{quantity}</Amount>
+              <Add onClick={() => handleQuantity("asc")} />
             </AmountContainer>
-            <Button>Add to Cart</Button>
+            <Button onClick={handleUpdate}>Add to Cart</Button>
           </AddContainer>
         </InfoContainer>
       </Container>
