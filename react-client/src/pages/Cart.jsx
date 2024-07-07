@@ -8,7 +8,7 @@ import { Tablet, mobile } from '../responsive';
 import { useSelector } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import { userRequest } from '../requestMethod';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const STRIPE_KEY = import.meta.env.VITE_STRIPE_KEY;
 
@@ -175,6 +175,7 @@ const Cart = () => {
   const [stripeToken, setStripeToken ] = useState(null)
   console.log('Cart:', cart); 
   console.log('Cart Products:', cart.products);
+  const navigate = useNavigate();
 
   const handleToken = token => {
     console.log('Stripe Token:', token);
@@ -182,18 +183,23 @@ const Cart = () => {
     // Here you can handle the payment processing
   };
 
-  useEffect(()=>{
-    const makeRequest = async ()=>{
+  useEffect(() => {
+    const makeRequest = async () => {
       try {
-        const res = await userRequest("/checkout/payment", {
-          tokenId: stripeToken,
-          amount: cart.total * 100
-        })
+        const res = await userRequest.post("/checkout/payment", {
+          tokenId: stripeToken.id,
+          amount: cart.total * 100,
+        });
+        navigate("/success", { state: { data: res.data } }); // pass any necessary state here
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
+    };
+
+    if (stripeToken && cart.total > 0) {
+      makeRequest();
     }
-  }, [stripeToken, cart.total, history])
+  }, [stripeToken, cart.total, navigate]);
 
   return (
     <Container>
@@ -202,7 +208,9 @@ const Cart = () => {
       <Wrapper>
         <Head>YOUR CART</Head>
         <Top>
+          <Link to="/products">
           <Button>CONTINUE SHOPPING</Button>
+          </Link>
           <TopTexts>
             <Toptext>Shopping Bag ({cart.products.length})</Toptext>
             <Toptext>Wishlist (0)</Toptext>
