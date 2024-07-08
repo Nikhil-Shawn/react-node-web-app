@@ -180,7 +180,6 @@ const Cart = () => {
   const handleToken = token => {
     console.log('Stripe Token:', token);
     setStripeToken(token)
-    // Here you can handle the payment processing
   };
 
   useEffect(() => {
@@ -190,12 +189,14 @@ const Cart = () => {
           tokenId: stripeToken.id,
           amount: cart.total * 100,
         });
-        navigate("/success", { state: { data: res.data } }); // pass any necessary state here
+        navigate("/success", { state: {
+           data: res.data,
+           products: cart
+        } }); // pass any necessary state here
       } catch (error) {
         console.log(error);
       }
     };
-
     if (stripeToken && cart.total > 0) {
       makeRequest();
     }
