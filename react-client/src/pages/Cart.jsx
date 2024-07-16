@@ -7,7 +7,7 @@ import { Add, Remove } from '@mui/icons-material';
 import { Tablet, mobile } from '../responsive';
 import { useSelector } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
-import { userRequest } from '../requestMethod';
+import { userRequest } from '../requestmethod';
 import { Link, useNavigate } from 'react-router-dom';
 
 const STRIPE_KEY = import.meta.env.VITE_STRIPE_KEY;
