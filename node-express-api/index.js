@@ -7,18 +7,20 @@ const product = require('./routes/product')
 const notFound = require('./middleware/not-found')
 const cart = require('./routes/cart')
 const order = require('./routes/order')
+const stripe = require('./routes/stripe')
 
 const cors=require("cors");
 dotenv.config();
 
 const corsOptions ={
    origin:'*', 
-   credentials:true,            //access-control-allow-credentials:true
+   credentials:true,            
    optionSuccessStatus:200,
 }
 
-app.use(cors(corsOptions)) // Use this after the variable declaration
+app.use(cors(corsOptions)) 
 app.use(express.json())
+app.use('/api/v1', stripe); 
 app.use('/api/v1/', user)
 app.use('/api/v1/product', product)
 app.use('/api/v1/cart', cart)

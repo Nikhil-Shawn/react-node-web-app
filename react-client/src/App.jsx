@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import SingleProductPage from './pages/SingleProductPage';
 import {BrowserRouter as Router, Route, Link,
 Routes} from "react-router-dom"
+import Success from './pages/Success';
 
 
 const App = () => {
@@ -26,6 +27,8 @@ const App = () => {
         <Route path="/product/:id" element={<SingleProductPage />}>
         </Route>
         <Route path="/cart" element={<Cart />}>
+        </Route>
+        <Route path="/success" element={<Success />}>
         </Route>
         </Routes>
     </Router>
