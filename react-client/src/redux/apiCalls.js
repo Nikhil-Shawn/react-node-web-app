@@ -1,12 +1,17 @@
-import { loginFailure, loginStart, loginSuccess } from "./userSlice"
-import {publicRequest} from '../requestmethod'
+import { loginFailure, loginStart, loginSuccess } from "./userSlice";
+import { publicRequest } from "../requestmethod";
 
-export const login = async(dispatch, user)=>{
+// Login slice for user
+
+export const login = async (dispatch, user) => {
     dispatch(loginStart());
     try {
-        const res = await publicRequest.post("/auth/login", user)
-        dispatch(loginSuccess(res.data))
+        // publicRequest api is declared requestmethod
+        const res = await publicRequest.post("/login", user);
+        console.log("API Response:", res); 
+        dispatch(loginSuccess(res.data));
     } catch (error) {
-        dispatch(loginFailure())
+        console.error("API Error:", error); 
+        dispatch(loginFailure());
     }
-}
+};
