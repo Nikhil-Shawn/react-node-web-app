@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { login } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -53,6 +53,11 @@ const Input = styled.input`
   ${mobile({ width: '100%' })}
 `;
 
+const ErrorMessage = styled.span`
+  color: red;
+  font-size: 12px;
+`;
+
 const StyledLink = styled.a`
   cursor: pointer;
   margin-bottom: 5px;
@@ -84,17 +89,47 @@ const Button = styled.button`
   }
 `;
 
+const Error = styled.span`
+  color: red;
+`;
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const dispatch = useDispatch();
   const { isFetching, error } = useSelector((state) => state.user);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    login(dispatch, { username, password });
-    console.log(username, password);
+    let isValid = true;
+    if (!username) {
+      setUsernameError("Username/Email is required");
+      isValid = false;
+    } else {
+      setUsernameError("");
+    }
+    if (!password) {
+      setPasswordError("Password is required");
+      isValid = false;
+    } else {
+      setPasswordError("");
+    }
+    if (isValid) {
+      login(dispatch, { username, password });
+      console.log(username, password);
+    }
   };
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        dispatch({ type: 'user/clearError' }); // You need to add this action in your userSlice
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [error, dispatch]);
 
   return (
     <Container>
@@ -103,20 +138,25 @@ const Login = () => {
         <Form onSubmit={handleLogin}>
           <Input
             placeholder="Username/Email"
+            value={username}
             onChange={(e) => {
               setUsername(e.target.value);
             }}
           />
+          {usernameError && <ErrorMessage>{usernameError}</ErrorMessage>}
           <Input
             type="password"
             placeholder="Password"
+            value={password}
             onChange={(e) => {
               setPassword(e.target.value);
             }}
           />
+          {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
           <Button type="submit" disabled={isFetching}>
             Login
           </Button>
+          {error && <Error>Wrong Username or Password</Error>}
         </Form>
         <StyledLink>Forgot your password?</StyledLink>
         <StyledLink>Create a new account</StyledLink>
