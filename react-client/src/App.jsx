@@ -7,10 +7,11 @@ import SingleProductPage from './pages/SingleProductPage';
 import {BrowserRouter as Router, Route, Link,
 Routes} from "react-router-dom"
 import Success from './pages/Success';
+import { useSelector } from 'react-redux';
 
 
 const App = () => {
-  const user = false;
+  const user = useSelector((state)=>state.user.currentUser);
   return (
     <Router>
       <Routes>

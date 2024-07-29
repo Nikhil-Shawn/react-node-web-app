@@ -3,6 +3,7 @@ import { mobile } from "../responsive";
 import { useState, useEffect } from "react";
 import { login } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -99,7 +100,8 @@ const Login = () => {
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const dispatch = useDispatch();
-  const { isFetching, error } = useSelector((state) => state.user);
+  const { isFetching, error, currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -118,15 +120,20 @@ const Login = () => {
     }
     if (isValid) {
       login(dispatch, { username, password });
-      console.log(username, password);
     }
   };
 
   useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
+
+  useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
-        dispatch({ type: 'user/clearError' }); // You need to add this action in your userSlice
-      }, 2500);
+        dispatch({ type: 'user/clearError' });
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [error, dispatch]);
@@ -139,18 +146,14 @@ const Login = () => {
           <Input
             placeholder="Username/Email"
             value={username}
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
+            onChange={(e) => setUsername(e.target.value)}
           />
           {usernameError && <ErrorMessage>{usernameError}</ErrorMessage>}
           <Input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            onChange={(e) => setPassword(e.target.value)}
           />
           {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
           <Button type="submit" disabled={isFetching}>
