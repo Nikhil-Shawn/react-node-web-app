@@ -19,6 +19,10 @@ const userSlice = createSlice({
         state.isFetching = false,
         state.error = true;
     },
+    // Timer in login.jsx file
+    clearError: (state) =>{
+      state.error = null;
+    }
   },
 });
 
