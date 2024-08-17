@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 /node_modules
 .env# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+=======
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+>>>>>>> 89b55d33c1a9a0da33d3c6c616a99af8acccaf1d
 
 # dependencies
 /node_modules

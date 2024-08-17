@@ -5,11 +5,13 @@ import ProductPage from './pages/ProductPage';
 import Register from './pages/Register';
 import SingleProductPage from './pages/SingleProductPage';
 import {BrowserRouter as Router, Route, Link,
-Routes, Navigate} from "react-router-dom"
+Routes} from "react-router-dom"
+import Success from './pages/Success';
+import { useSelector } from 'react-redux';
 
 
 const App = () => {
-  const user = false;
+  const user = useSelector((state)=>state.user.currentUser);
   return (
     <Router>
       <Routes>
@@ -26,6 +28,8 @@ const App = () => {
         <Route path="/product/:id" element={<SingleProductPage />}>
         </Route>
         <Route path="/cart" element={<Cart />}>
+        </Route>
+        <Route path="/success" element={<Success />}>
         </Route>
         </Routes>
     </Router>
