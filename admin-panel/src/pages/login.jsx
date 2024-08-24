@@ -1,6 +1,10 @@
 // Login.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { login } from '../redux/apiCalls';
+
 
 const Container = styled.div`
   width: 100vw;
@@ -100,19 +104,48 @@ const ErrorMessage = styled.span`
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const { isFetching, error, currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  
 
   const handleLogin = (e) => {
     e.preventDefault();
-    setError(false);
-
-    // Example login logic
-    if (username === 'admin' && password === 'password') {
-      console.log('Logged in');
+    let isValid = true;
+    if (!username) {
+      setUsernameError("Username/Email is required");
+      isValid = false;
     } else {
-      setError(true);
+      setUsernameError("");
+    }
+    if (!password) {
+      setPasswordError("Password is required");
+      isValid = false;
+    } else {
+      setPasswordError("");
+    }
+    if (isValid) {
+      login(dispatch, { username, password });
     }
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        dispatch({ type: 'user/clearError' });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error, dispatch]);
 
   return (
     <Container>
@@ -124,13 +157,15 @@ const Login = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
+           {usernameError && <ErrorMessage>{usernameError}</ErrorMessage>}
           <Input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button type="submit">Login</Button>
+          /> 
+          {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
+          <Button type="submit" disabled={isFetching}>Login</Button>
           {error && <ErrorMessage>Invalid Username or Password</ErrorMessage>}
         </Form>
         <Link>Forgot your password?</Link>

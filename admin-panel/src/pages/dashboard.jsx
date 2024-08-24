@@ -4,16 +4,20 @@ import { FaUserAlt, FaBox, FaShoppingCart, FaTruck, FaCog, FaSignOutAlt, FaBell,
 import { BsGraphUp } from 'react-icons/bs';
 import GlobalStyles from '../components/GlobalStyles';
 import { lightTheme, darkTheme } from '../components/Themes';
+import { useSelector } from 'react-redux';
 
 const MainDashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
+  
+  const user = useSelector(state => state.user.currentUser?.username);
+
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <GlobalStyles />
       <Container>
         <Sidebar>
-          <Logo>NikAdmin</Logo>
+          <Logo>Nik Admin Panel</Logo>
           <NavItem><FaUserAlt /> Users</NavItem>
           <NavItem><FaBox /> Products</NavItem>
           <NavItem><FaShoppingCart /> Orders</NavItem>
@@ -33,7 +37,7 @@ const MainDashboard = () => {
           <TopBar>
             <SearchInput placeholder="Search..." />
             <NotificationIcons>
-              <FaBell />
+            <h4><b>{user}</b></h4>
               <FaBell />
             </NotificationIcons>
           </TopBar>
