@@ -4,13 +4,23 @@ import { FaUserAlt, FaBox, FaShoppingCart, FaTruck, FaCog, FaSignOutAlt, FaBell,
 import { BsGraphUp } from 'react-icons/bs';
 import GlobalStyles from '../components/GlobalStyles';
 import { lightTheme, darkTheme } from '../components/Themes';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import {logout} from '../redux/userSlice'
+
 
 const MainDashboard = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
   
   const user = useSelector(state => state.user.currentUser?.username);
-
+ 
+  const handleLogout = () => {
+    dispatch(logout());
+    localStorage.removeItem('token');
+    navigate('/login');
+  }
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
@@ -28,7 +38,7 @@ const MainDashboard = () => {
           <NavItem><FaCog /> Logs</NavItem>
           <NavItem><FaCog /> Settings</NavItem>
           <NavItem><FaUserAlt /> Profile</NavItem>
-          <NavItem><FaSignOutAlt /> Logout</NavItem>
+          <NavItem onClick={handleLogout}><FaSignOutAlt /> Logout</NavItem>
           <ThemeToggle onClick={() => setDarkMode(!darkMode)}>
             {darkMode ? <FaSun /> : <FaMoon />}
           </ThemeToggle>

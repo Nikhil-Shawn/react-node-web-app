@@ -5,7 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { mobile } from '../responsive';
-import { publicRequest } from '../requestMethod';
+import { publicRequest } from '../requestmethod';
 import axios from 'axios';
 
 const Container = styled.div`
