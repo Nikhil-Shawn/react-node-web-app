@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { FaUserAlt, FaBox, FaShoppingCart, FaTruck, FaCog, FaSignOutAlt, FaBell, FaMoon, FaSun } from 'react-icons/fa';
 import { BsGraphUp } from 'react-icons/bs';
@@ -6,21 +6,37 @@ import GlobalStyles from '../components/GlobalStyles';
 import { lightTheme, darkTheme } from '../components/Themes';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {logout} from '../redux/userSlice'
-
+import { userRequest } from '../requestmethod';  // Import the userRequest for authenticated requests
+import { logout } from '../redux/userSlice';
 
 const MainDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
-  
+  const [users, setUsers] = useState([]); // State for holding the list of users
+
   const user = useSelector(state => state.user.currentUser?.username);
- 
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await userRequest.get('/auth/user');
+        const usersArray = Object.values(response.data); // Convert the object to an array
+        setUsers(usersArray); // Set the array to state
+      } catch (err) {
+        console.error('Failed to fetch users:', err);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+
   const handleLogout = () => {
     dispatch(logout());
     localStorage.removeItem('token');
     navigate('/login');
-  }
+  };
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
@@ -47,7 +63,7 @@ const MainDashboard = () => {
           <TopBar>
             <SearchInput placeholder="Search..." />
             <NotificationIcons>
-            <h4><b>{user}</b></h4>
+              <h4><b>{user}</b></h4>
               <FaBell />
             </NotificationIcons>
           </TopBar>
@@ -69,6 +85,24 @@ const MainDashboard = () => {
               <h1>$7.8k</h1>
             </Widget>
           </Dashboard>
+
+          {/* New Users Section */}
+          <NewUsersSection>
+            <h3>New Join Members</h3>
+            <UsersList>
+              {Array.isArray(users) && users.length > 0 ? (
+                users.map(user => (
+                  <UserItem key={user.id}>
+                    <FaUserAlt />
+                    <span>{user.username}</span>
+                    <DisplayButton>Display</DisplayButton>
+                  </UserItem>
+                ))
+              ) : (
+                <p>No users found</p>
+              )}
+            </UsersList>
+          </NewUsersSection>
         </MainContent>
       </Container>
     </ThemeProvider>
@@ -166,4 +200,41 @@ const ThemeToggle = styled.div`
   margin-top: auto;
   cursor: pointer;
   align-self: center;
+`;
+
+/* New Users Section Styles */
+const NewUsersSection = styled.div`
+  margin-top: 40px;
+`;
+
+const UsersList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const UserItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: ${({ theme }) => theme.widgetBg};
+  border-radius: 5px;
+
+  & svg {
+    margin-right: 10px;
+  }
+`;
+
+const DisplayButton = styled.button`
+  margin-left: auto;
+  padding: 5px 10px;
+  background-color: ${({ theme }) => theme.primary};
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.primaryHover};
+  }
 `;
