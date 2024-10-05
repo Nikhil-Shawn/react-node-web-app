@@ -6,14 +6,16 @@ import GlobalStyles from '../components/GlobalStyles';
 import { lightTheme, darkTheme } from '../components/Themes';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { userRequest } from '../requestmethod';  // Import the userRequest for authenticated requests
+import axios from 'axios';
 import { logout } from '../redux/userSlice';
+import { userRequest } from '../requestmethod';
 
 const MainDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
-  const [users, setUsers] = useState([]); // State for holding the list of users
+  const [users, setUsers] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
   const user = useSelector(state => state.user.currentUser?.username);
 
@@ -28,9 +30,18 @@ const MainDashboard = () => {
       }
     };
 
-    fetchUsers();
-  }, []);
+    const fetchTransactions = async () => {
+      try {
+        const response = await axios.get('/transactions');
+        setTransactions(response.data);
+      } catch (err) {
+        console.error('Failed to fetch transactions:', err);
+      }
+    };
 
+    fetchUsers();
+    fetchTransactions();
+  }, []);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -86,23 +97,52 @@ const MainDashboard = () => {
             </Widget>
           </Dashboard>
 
-          {/* New Users Section */}
-          <NewUsersSection>
-            <h3>New Join Members</h3>
-            <UsersList>
-              {Array.isArray(users) && users.length > 0 ? (
-                users.map(user => (
-                  <UserItem key={user.id}>
-                    <FaUserAlt />
-                    <span>{user.username}</span>
-                    <DisplayButton>Display</DisplayButton>
-                  </UserItem>
-                ))
-              ) : (
-                <p>No users found</p>
-              )}
-            </UsersList>
-          </NewUsersSection>
+          {/* Wrapper for New Users and Latest Transactions side by side */}
+          <FlexWrapper>
+            {/* New Users Section */}
+            <NewUsersSection>
+              <h3>New Join Members</h3>
+              <UsersList>
+  {Array.isArray(users) && users.length > 0 ? (
+    users.map(user => (
+      <UserItem key={user.id}>
+        <FaUserAlt />
+        <span>{user.username}</span>
+        <DisplayButton>Display</DisplayButton>
+      </UserItem>
+    ))
+  ) : (
+    <p>No users found</p>
+  )}
+</UsersList>
+
+            </NewUsersSection>
+
+            {/* Latest Transactions Section */}
+            <LatestTransactionsSection>
+              <h3>Latest Transactions</h3>
+              <TransactionsTable>
+                <thead>
+                  <tr>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {transactions.map(transaction => (
+                    <tr key={transaction.id}>
+                      <td>{transaction.customer}</td>
+                      <td>{new Date(transaction.date).toLocaleString()}</td>
+                      <td>${transaction.amount}</td>
+                      <td>{transaction.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </TransactionsTable>
+            </LatestTransactionsSection>
+          </FlexWrapper>
         </MainContent>
       </Container>
     </ThemeProvider>
@@ -111,6 +151,7 @@ const MainDashboard = () => {
 
 export default MainDashboard;
 
+/* Styles */
 const Container = styled.div`
   display: flex;
   height: 100vh;
@@ -202,9 +243,17 @@ const ThemeToggle = styled.div`
   align-self: center;
 `;
 
+/* New Flex Wrapper to align sections side by side */
+const FlexWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+`;
+
 /* New Users Section Styles */
 const NewUsersSection = styled.div`
-  margin-top: 40px;
+  flex: 1; /* Take up equal space with the Latest Transactions section */
+  margin-right: 20px;
 `;
 
 const UsersList = styled.div`
@@ -236,5 +285,27 @@ const DisplayButton = styled.button`
 
   &:hover {
     background-color: ${({ theme }) => theme.primaryHover};
+  }
+`;
+
+/* Latest Transactions Section */
+const LatestTransactionsSection = styled.div`
+  flex: 2; /* Take up more space than the New Users section */
+`;
+
+const TransactionsTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  background-color: ${({ theme }) => theme.widgetBg};
+  border-radius: 5px;
+
+  th, td {
+    padding: 10px;
+    border: 1px solid ${({ theme }) => theme.border};
+    text-align: left;
+  }
+
+  th {
+    background-color: ${({ theme }) => theme.tableHeaderBg};
   }
 `;
